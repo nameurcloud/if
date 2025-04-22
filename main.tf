@@ -73,6 +73,7 @@ resource "google_cloud_run_service_iam_member" "cloud_run_public_access_frontend
 }
 
 # Allow frontend service account to invoke backend Cloud Run
+/*
 resource "google_cloud_run_service_iam_member" "frontend_can_invoke_backend" {
   location = var.region
   project  = var.project_id
@@ -81,6 +82,25 @@ resource "google_cloud_run_service_iam_member" "frontend_can_invoke_backend" {
   member   = "serviceAccount:${google_service_account.frontend_sa.email}"
   
 }
+*/
+
+data "google_iam_policy" "frontend_can_invoke_backend_policy" {
+  binding {
+    role = "roles/run.invoker"
+    members = [
+      "serviceAccount:${google_service_account.frontend_sa.email}",
+    ]
+  }
+}
+
+resource "google_cloud_run_service_iam_policy" "frontend_can_invoke_backend_policy_runiam" {
+  location = var.region
+  project  = var.project_id
+  service  = google_cloud_run_service.cloud_run_frontend.name
+
+  policy_data = data.google_iam_policy.frontend_can_invoke_backend_policy.policy_data
+}
+
 
 # Optional: Grant logging/monitoring roles to the service accounts (recommended)
 resource "google_project_iam_member" "frontend_logging" {
