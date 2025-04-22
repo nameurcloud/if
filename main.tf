@@ -3,6 +3,12 @@ provider "google" {
   region  = var.region
 }
 
+resource "google_project_service" "enable_apis" {
+  for_each = toset(var.enabled_apis)
+  project  = var.project_id
+  service  = each.value
+}
+
 # Backend Service Account
 resource "google_service_account" "backend_sa" {
   account_id   = "backend-service-account"
