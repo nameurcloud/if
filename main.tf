@@ -151,5 +151,5 @@ resource "google_artifact_registry_repository" "docker_repo" {
   repository_id = "production"
   description   = "Docker repo for Nameurcloud project"
   format        = "DOCKER"
-  depends_on = [ google_project_service ]
+  depends_on = [ google_project_service.enable_apis ]
 }
