@@ -13,14 +13,12 @@ resource "google_project_service" "enable_apis" {
 resource "google_service_account" "backend_sa" {
   account_id   = "backend-service-account"
   display_name = "Backend Service Account"
-  depends_on = [ google_project_service.enable_apis ]
 }
 
 # Frontend Service Account
 resource "google_service_account" "frontend_sa" {
   account_id   = "frontend-service-account"
   display_name = "Frontend Service Account"
-  depends_on = [ google_project_service.enable_apis ]
 }
 
 # Backend Cloud Run (private)
@@ -42,7 +40,6 @@ resource "google_cloud_run_service" "cloud_run_backend" {
     percent         = 100
     latest_revision = true
   }
-  depends_on = [ google_project_service.enable_apis ]
 }
 
 # Frontend Cloud Run (public)
@@ -64,7 +61,6 @@ resource "google_cloud_run_service" "cloud_run_frontend" {
     percent         = 100
     latest_revision = true
   }
-  depends_on = [ google_project_service.enable_apis ]
 }
 
 # Allow public access to frontend
@@ -74,7 +70,6 @@ resource "google_cloud_run_service_iam_member" "cloud_run_public_access_frontend
   service  = google_cloud_run_service.cloud_run_frontend.name
   role     = "roles/run.invoker"
   member   = "allUsers"
-  depends_on = [ google_project_service.enable_apis ]
 }
 
 # Allow frontend service account to invoke backend Cloud Run
@@ -84,7 +79,6 @@ resource "google_cloud_run_service_iam_member" "frontend_can_invoke_backend" {
   service  = google_cloud_run_service.cloud_run_backend.name
   role     = "roles/run.invoker"
   member   = "serviceAccount:${google_service_account.frontend_sa.email}"
-  depends_on = [ google_project_service.enable_apis ]
 }
 
 # Optional: Grant logging/monitoring roles to the service accounts (recommended)
@@ -92,14 +86,12 @@ resource "google_project_iam_member" "frontend_logging" {
   project = var.project_id
   role    = "roles/logging.logWriter"
   member  = "serviceAccount:${google_service_account.frontend_sa.email}"
-  depends_on = [ google_project_service.enable_apis ]
 }
 
 resource "google_project_iam_member" "backend_logging" {
   project = var.project_id
   role    = "roles/logging.logWriter"
   member  = "serviceAccount:${google_service_account.backend_sa.email}"
-  depends_on = [ google_project_service.enable_apis ]
 }
 
 # Domain mapping for frontend
@@ -114,7 +106,6 @@ resource "google_cloud_run_domain_mapping" "connect_to_www_domain_frontend" {
   spec {
     route_name = google_cloud_run_service.cloud_run_frontend.name
   }
-  depends_on = [ google_project_service.enable_apis ]
 }
 
 resource "google_cloud_run_domain_mapping" "connect_to_root_domain_frontend" {
@@ -128,7 +119,6 @@ resource "google_cloud_run_domain_mapping" "connect_to_root_domain_frontend" {
   spec {
     route_name = google_cloud_run_service.cloud_run_frontend.name
   }
-  depends_on = [ google_project_service.enable_apis ]
 }
 
 resource "google_cloud_run_domain_mapping" "backend_domain_mapping" {
@@ -142,7 +132,6 @@ resource "google_cloud_run_domain_mapping" "backend_domain_mapping" {
   spec {
     route_name = google_cloud_run_service.cloud_run_backend.name
   }
-  depends_on = [ google_project_service.enable_apis ]
 }
 
 resource "google_artifact_registry_repository" "docker_repo" {
@@ -151,5 +140,4 @@ resource "google_artifact_registry_repository" "docker_repo" {
   repository_id = "production"
   description   = "Docker repo for Nameurcloud project"
   format        = "DOCKER"
-  depends_on = [ google_project_service.enable_apis ]
 }
