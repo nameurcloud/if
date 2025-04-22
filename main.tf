@@ -93,6 +93,7 @@ data "google_iam_policy" "frontend_can_invoke_backend_policy" {
   }
 }
 
+#https://cloud.google.com/run/docs/authenticating/service-to-service#terraform
 resource "google_cloud_run_service_iam_policy" "frontend_can_invoke_backend_policy_runiam" {
   location = var.region
   project  = var.project_id
