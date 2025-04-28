@@ -23,7 +23,7 @@ resource "google_cloud_run_v2_service" "cloud_run_backend" {
   name     = var.service_name_b
   location = var.region
   ingress  = "INGRESS_TRAFFIC_ALL"
-
+  deletion_protection = false
   custom_audiences = ["api.nameurcloud.com", "https://api.nameurcloud.com"]
 
   template {
