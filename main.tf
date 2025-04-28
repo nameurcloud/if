@@ -81,7 +81,7 @@ resource "google_cloud_run_service_iam_member" "cloud_run_public_access_frontend
 resource "google_cloud_run_service_iam_member" "frontend_can_invoke_backend" {
   location = var.region
   project  = var.project_id
-  service  = google_cloud_run_service.cloud_run_backend.name
+  service  = google_cloud_run_v2_service.cloud_run_backend.name
   role     = "roles/run.invoker"
   member   = "serviceAccount:${google_service_account.frontend_sa.email}"
   
@@ -141,7 +141,7 @@ resource "google_cloud_run_domain_mapping" "backend_domain_mapping" {
   }
 
   spec {
-    route_name = google_cloud_run_service.cloud_run_backend.name
+    route_name = google_cloud_run_v2_service.cloud_run_backend.name
   }
   
 }
