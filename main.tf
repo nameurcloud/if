@@ -19,26 +19,31 @@ resource "google_service_account" "frontend_sa" {
 }
 
 # Backend Cloud Run (private)
-resource "google_cloud_run_service" "cloud_run_backend" {
+resource "google_cloud_run_v2_service" "cloud_run_backend" {
   name     = var.service_name_b
   location = var.region
+  ingress  = "INGRESS_TRAFFIC_ALL"
+
+  custom_audiences = ["api.nameurcloud.com", "https://api.nameurcloud.com"]
 
   template {
-    spec {
-      service_account_name = google_service_account.backend_sa.email
+    service_account = google_service_account.backend_sa.email
 
-      containers {
-        image = var.container_image_b
-      }
+    containers {
+      image = var.container_image_b
     }
   }
 
   traffic {
-    percent         = 100
-    latest_revision = true
+    percent = 100
+    type    = "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
   }
-  
+
+  labels = {
+    "managed-by" = "terraform"
+  }
 }
+
 
 # Frontend Cloud Run (public)
 resource "google_cloud_run_service" "cloud_run_frontend" {
