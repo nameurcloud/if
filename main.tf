@@ -49,6 +49,12 @@ resource "google_cloud_run_v2_service" "cloud_run_backend" {
   labels = {
     "managed-by" = "terraform"
   }
+
+   lifecycle {
+    ignore_changes = [
+      template[0].containers[0].image
+    ]
+  }
 }
 
 
@@ -72,6 +78,12 @@ resource "google_cloud_run_service" "cloud_run_api" {
     percent         = 100
     latest_revision = true
   }
+
+   lifecycle {
+    ignore_changes = [
+      template[0].spec[0].containers[0].image
+    ]
+  }
 }
 
 
@@ -94,7 +106,11 @@ resource "google_cloud_run_service" "cloud_run_frontend" {
     percent         = 100
     latest_revision = true
   }
-  
+    lifecycle {
+    ignore_changes = [
+      template[0].containers[0].image
+    ]
+  }
 }
 
 # Allow public access to frontend
