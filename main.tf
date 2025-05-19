@@ -38,7 +38,17 @@ resource "google_cloud_run_v2_service" "cloud_run_backend" {
 
     containers {
       image = var.container_image_b
+       env {
+          name  = "JWT_SECRET"
+          value = "dummyvalue"
+        }
+
+        env {
+          name  = "MONGO_URI"
+          value = "dummyvalue"
+        }
     }
+    
   }
 
   traffic {
@@ -52,7 +62,8 @@ resource "google_cloud_run_v2_service" "cloud_run_backend" {
 
    lifecycle {
     ignore_changes = [
-      template[0].containers[0].image
+      template[0].containers[0].image,
+      template[0].containers[0].env
     ]
   }
 }
