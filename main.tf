@@ -24,7 +24,7 @@ resource "google_cloud_run_v2_service" "cloud_run_backend" {
   location = var.region
   ingress  = "INGRESS_TRAFFIC_ALL"
   deletion_protection = false
-  custom_audiences = ["api.nameurcloud.com", "https://api.nameurcloud.com"]
+  custom_audiences = ["be.nameurcloud.com", "https://be.nameurcloud.com"]
 
   template {
     service_account = google_service_account.backend_sa.email
@@ -133,7 +133,7 @@ resource "google_cloud_run_domain_mapping" "connect_to_root_domain_frontend" {
 }
 
 resource "google_cloud_run_domain_mapping" "backend_domain_mapping" {
-  name     = "api.nameurcloud.com"
+  name     = "be.nameurcloud.com"
   location = var.region
 
   metadata {
