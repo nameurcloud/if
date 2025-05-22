@@ -47,6 +47,14 @@ resource "google_cloud_run_v2_service" "cloud_run_backend" {
           name  = "MONGO_URI"
           value = "dummyvalue"
         }
+        env {
+          name = "RAZORPAY_KEY_ID"
+          value = "dummyvalue"
+        }
+        env {
+          name = "RAZORPAY_SECRET"
+          value = "dummyvalue"
+        }
     }
     
   }
@@ -81,16 +89,6 @@ resource "google_cloud_run_service" "cloud_run_api" {
 
     containers {
       image = var.container_image_api
-       env {
-          name  = "JWT_SECRET"
-          value = "dummyvalue"
-        }
-
-        env {
-          name  = "MONGO_URI"
-          value = "dummyvalue"
-        }
-
         env{
           name = "env"
           value = "dummyvalue"
