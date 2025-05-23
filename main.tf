@@ -90,10 +90,6 @@ resource "google_cloud_run_service" "cloud_run_api" {
     containers {
       image = var.container_image_api
         env{
-          name = "env"
-          value = "dummyvalue"
-        }
-        env {
           name = "BACKEND_URL"
           value = "dummyvalue"
         }

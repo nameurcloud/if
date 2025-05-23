@@ -5,7 +5,7 @@ This is the repo holding terraform code to build and maintain nameurcloud infras
 
 ## Requirements
 - Terraform (v1.11.3 or higher)
-- Service Account Key  ( Get it from the owner )
+- Service Account Key  ( Get it from the owner if you want to run locally )
 
 ## Running the Project Locally
 
@@ -13,7 +13,7 @@ This is the repo holding terraform code to build and maintain nameurcloud infras
 export GOOGLE_APPLICATION_CREDENTIALS="/path/to/your-service-account-key.json"
 
 ### Step 2: Update tfvars
-Update Project
+Update Project. DO NOT USE PRODUCTION
 
 ```bash
 terraform init
