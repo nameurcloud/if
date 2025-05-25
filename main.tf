@@ -217,19 +217,7 @@ resource "google_cloud_run_domain_mapping" "connect_to_www_domain_frontend" {
   
 }
 
-resource "google_cloud_run_domain_mapping" "connect_to_root_domain_frontend" {
-  name     = "nameurcloud.com"
-  location = var.region
 
-  metadata {
-    namespace = var.project_id
-  }
-
-  spec {
-    route_name = google_cloud_run_service.cloud_run_frontend.name
-  }
-  
-}
 
 resource "google_cloud_run_domain_mapping" "backend_domain_mapping" {
   name     = "be.nameurcloud.com"
