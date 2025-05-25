@@ -126,18 +126,7 @@ resource "google_cloud_run_service" "cloud_run_frontend" {
 
       containers {
         image = var.container_image
-        env {
-          name = "BACKEND_URL"
-          value = "dummyvalue"
-        }
-        env {
-          name = "SERVER_PORT"
-          value = "dummyvalue"
-        }
-        env {
-          name = "SKIP_AUTH"
-          value = "dummyvalue"
-        }
+       
       }
     }
   }
@@ -148,8 +137,7 @@ resource "google_cloud_run_service" "cloud_run_frontend" {
   }
     lifecycle {
     ignore_changes = [
-      template[0].spec[0].containers[0].image,
-      template[0].spec[0].containers[0].env
+      template[0].spec[0].containers[0].image
     ]
   }
 }
