@@ -31,7 +31,7 @@ resource "google_cloud_run_v2_service" "cloud_run_backend" {
   location = var.region
   ingress  = "INGRESS_TRAFFIC_ALL"
   deletion_protection = false
-  custom_audiences = ["be.nameurcloud.com", "https://be.nameurcloud.com"]
+  custom_audiences = ["be.nameurcloud.com", "https://be.nameurcloud.com","http://be.nameurcloud.com"]
 
   template {
     service_account = google_service_account.backend_sa.email
